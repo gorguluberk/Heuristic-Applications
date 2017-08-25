@@ -77,7 +77,7 @@ def calculateTotalCost(solution,distanceMatrix,demand):#Calculates the current o
     return cost
 
 
-def LocalSearch(initialSolution,x_coordinate,y_coordinate,demand,greedy=False,neighborRadius=1): #greedy=False -> Best improvement, greedy=True -> First improvement
+def LocalSearch(initialSolution,x_coordinate,y_coordinate,demand,greedy=False,neighborRadius=1,verbose=False,summary=True): #greedy=False -> Best improvement, greedy=True -> First improvement
     start_time = cl.time()
     distanceMatrix = createDistanceMatrix(x_coordinate, y_coordinate)
     completeSet = range(0,len(distanceMatrix)) #Create list of facilities
@@ -85,6 +85,9 @@ def LocalSearch(initialSolution,x_coordinate,y_coordinate,demand,greedy=False,ne
     [remainingSet.remove(x) for x in initialSolution] #Initialize the remaining set
     tempCost=calculateTotalCost(initialSolution,distanceMatrix,demand) #Create a copy of the total cost
     initialCost=tempCost
+    
+    print "Iteration:",0,"Solution:",initialSolution,"Cost",initialCost
+    
     newSolution = list(initialSolution) #create a copy of the initial solution
     iteration = 0 #initialize the iteration counter
     solutionCounter = 0 #initialize the solution counter (# of solution evaluated)
@@ -112,7 +115,9 @@ def LocalSearch(initialSolution,x_coordinate,y_coordinate,demand,greedy=False,ne
                     temporarySolution.remove(m[p])
             if stop:
                 break
+            
         iteration = iteration + 1
+        print "Iteration:",iteration,"Solution:",temporarySolution,"Cost",tempCost
         #after evaluating all alternatives update the solution set
         try:
             for p in range(neighborRadius):
@@ -121,6 +126,15 @@ def LocalSearch(initialSolution,x_coordinate,y_coordinate,demand,greedy=False,ne
         except:
             continue
     elapsed_time =cl.time()-start_time
+    
+    if summary is True:
+        print" "
+        print "Summary"
+        print "Best solution is found at iteration",iteration,"in",elapsed_time,"seconds"
+        print "Initial Solution is",initialSolution,"with objective value of",initialCost
+        print "Best Solution is",newSolution,"with objective value of",tempCost
+        print "Initial Solution is improved",(initialCost-tempCost)/initialCost*100,"%"
+    
     return iteration, newSolution, tempCost, elapsed_time, initialSolution, initialCost
 
 
@@ -131,9 +145,4 @@ def demo(greedy=False,neighborRadius=1):
     demands = np.loadtxt(dir_path+'/dem51.dat')[:,1]
     
     initialSolution = createRandomSolution(4, len(x))
-    iteration, newSolution, tempCost, elapsed_time, initialSolution, initialCost = LocalSearch(initialSolution, x, y, demands, greedy, neighborRadius)
-    
-    print "Best solution is found at iteration",iteration,"in",elapsed_time,"seconds"
-    print "Initial Solution is",initialSolution,"with objective value of",initialCost
-    print "Best Solution is",newSolution,"with objective value of",tempCost
-    print "Initial Solution is improved",(initialCost-tempCost)/initialCost*100,"%"
+    iteration, newSolution, tempCost, elapsed_time, initialSolution, initialCost = LocalSearch(initialSolution, x, y, demands, greedy, neighborRadius,False,True)
