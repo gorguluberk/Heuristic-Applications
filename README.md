@@ -1,10 +1,23 @@
 # Heuristic-Applications
 Applications of different heuristics on different kinds of problems
 
--> Local Search Application on P-Median Problem
+<ul>
+<li>
+Local Search Application on P-Median Problem
+</li>
 
--> Simulated Annealing Application on Generalized Assignment Problem
+<li>
+Simulated Annealing Application on Generalized Assignment Problem
+</li>
 
--> Genetic Algorithm Application on Flow Shop Scheduling Problem
+<li>
+Genetic Algorithm Application on Flow Shop Scheduling Problem
+</li>
 
--> Tabu Search Application on TSP with Profits
+<li>
+Tabu Search Application on TSP with Profits
+</li>
+</ul>
+
+
+
